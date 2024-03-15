@@ -61,7 +61,7 @@ def process_documents(business_process_doc, detailed_steps_docs):
     [("system", "Generate a test cases using the \n\n{context}")]
 )
 #    
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo")
+    llm = ChatOpenAI(model_name="gpt-3.5-turbo",openai_api_key=openai_api_key)
     chain = create_stuff_documents_chain(llm, prompt)
 
     docs = [Document(page_content= business_process_doc),
