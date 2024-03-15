@@ -8,4 +8,5 @@ streamlit-feedback
 python-docx 
 PyMuPDF 
 pandas
+textract
 
