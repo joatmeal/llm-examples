@@ -70,7 +70,9 @@ def main():
     st.title("Test Case Generator for Business Processes")
 
     business_process_doc = upload_business_process_document()
+    st.text(business_process_doc)
     detailed_steps_docs = upload_detailed_steps_documents()
+
 
     if st.button("Generate Test Cases") and business_process_doc and detailed_steps_docs:
         test_cases = process_documents(business_process_doc, detailed_steps_docs)
