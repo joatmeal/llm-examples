@@ -64,8 +64,9 @@ def process_documents(business_process_doc, detailed_steps_docs):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo",openai_api_key=openai_api_key)
     chain = create_stuff_documents_chain(llm, prompt)
 
-    docs = [Document(page_content= business_process_doc),
-            Document(page_content= detailed_steps_docs)]
+    docs = [Document(page_content= business_process_doc)]
+
+    #        Document(page_content= detailed_steps_docs)]
 
     chain.invoke({"context": docs})
 
