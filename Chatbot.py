@@ -9,6 +9,7 @@ with st.sidebar:
 
 st.title("💬 Chatbot")
 st.caption("🚀 A streamlit chatbot powered by teste  OpenAI LLM")
+uploaded_file = st.file_uploader("Upload an article", type=("txt", "md"))
 if "messages" not in st.session_state:
     st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you, Jeremy?"}]
 
