@@ -57,18 +57,24 @@ def upload_detailed_steps_documents():
 
 def process_documents(business_process_doc, detailed_steps_docs):
     
+    business_process_document = Document(content=business_process_doc, title="Business Process Document")
+    steps_documents = [Document(content=doc, title=name) for name, doc in detailed_steps_docs.items()]
+    combined_document = Document.combine([business_process_document] + steps_documents, title="Combined Document")
+
     prompt = ChatPromptTemplate.from_messages(
     [("system", "Generate a test cases using the \n\n{context}")]
 )
-#    
+    
     llm = ChatOpenAI(model_name="gpt-3.5-turbo",openai_api_key=openai_api_key)
     chain = create_stuff_documents_chain(llm, prompt)
 
-    docs = [Document(page_content= business_process_doc),Document(content=doc, title=name) for name, doc in detailed_steps_docs.items()]
+   # docs = [Document(page_content= business_process_doc),
+   #         Document(content=doc, title=name) for name, doc in detailed_steps_docs.items()
+   #         ]
 
 
     st.subheader("Generated Test Cases")
-    st.write(chain.invoke({"context": docs}))
+    st.write(chain.invoke({"context": combined_document}))
 
 def main():
 
