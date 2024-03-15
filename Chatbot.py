@@ -8,9 +8,9 @@ with st.sidebar:
     "[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/streamlit/llm-examples?quickstart=1)"
 
 st.title("💬 Chatbot")
-st.caption("🚀 A streamlit chatbot powered by OpenAI LLM")
+st.caption("🚀 A streamlit chatbot powered by teste  OpenAI LLM")
 if "messages" not in st.session_state:
-    st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you?"}]
+    st.session_state["messages"] = [{"role": "assistant", "content": "How can I help you, Jeremy?"}]
 
 for msg in st.session_state.messages:
     st.chat_message(msg["role"]).write(msg["content"])
