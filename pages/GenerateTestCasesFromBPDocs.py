@@ -22,14 +22,10 @@ def generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_ke
    for name, doc in detailed_steps_docs.items():
        combined_documents += f"{name}:\n{doc}\n\n"
    prompt = f"Generate test cases using the following documents:\n\n{combined_documents}"
-   response = client.completions.create(engine="gpt-3.5-turbo",
-   prompt=prompt,
-   max_tokens=1024,
-   n=1,
-   stop=None,
-   temperature=0.7)
+   response = client.completions.create(engine="gpt-3.5-turbo",prompt=prompt, max_tokens=1024,n=1,stop=None,temperature=0.7)
    test_cases = response.choices[0].text.strip()
    return test_cases
+
 def main():
    st.title("Test Case Generator for Business Processes")
    with st.sidebar:
