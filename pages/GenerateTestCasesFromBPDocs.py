@@ -7,8 +7,7 @@ from utils import read_pdf, read_docx, read_txt
 
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-    "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
-    
+
 def upload_document(label, file_types):
    uploaded_file = st.file_uploader(label, type=file_types)
    if uploaded_file is not None:
@@ -34,9 +33,7 @@ def process_documents(business_process_doc, detailed_steps_docs):
 
 def main():
    st.title("Test Case Generator for Business Processes")
-   with st.sidebar:
-       openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-       "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
+   
    business_process_doc = upload_document("Upload your business process document", ['txt', 'pdf', 'docx'])
    detailed_steps_docs = {}
    if business_process_doc:
