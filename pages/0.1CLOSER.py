@@ -68,7 +68,8 @@ def process_documents(business_process_doc, detailed_steps_docs):
 
     #        Document(page_content= detailed_steps_docs)]
 
-    chain.invoke({"context": docs})
+    process_documents = chain.invoke({"context": docs})
+
 
 #    combined_text = business_process_doc + "\n\n" + "\n\n".join(detailed_steps_docs.values())
 #    prompt = f"Based on the following business process and detailed steps, generate comprehensive test cases:\n\n{combined_text}\n\nTest cases:"
@@ -96,6 +97,9 @@ def main():
 
     if st.button("Generate Test Cases") and business_process_doc and detailed_steps_docs:
         test_cases = process_documents(business_process_doc, detailed_steps_docs)
+        st.write(test_cases) 
+        
+
 #        display_test_cases(test_cases)
 
 if __name__ == "__main__":
