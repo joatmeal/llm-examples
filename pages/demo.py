@@ -1,6 +1,6 @@
 import streamlit as st
 from openai import OpenAI, OpenAIError
-import textract 
+from utils import read_pdf, read_docx, read_txt
 
 def initialize_client(api_key):
     return OpenAI(api_key=api_key)
