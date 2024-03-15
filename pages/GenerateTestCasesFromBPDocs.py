@@ -27,7 +27,7 @@ def generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_ke
     # Assuming you are using the chat API
     messages = [{"role": "system", "content": prompt}]
     response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1024, stop=None, temperature=0.7)
-    
+    st.write(response.choices.count)
     if response.choices and isinstance(response.choices[0].message, list):
         messages = response.choices[0].message
         for msg in messages:
