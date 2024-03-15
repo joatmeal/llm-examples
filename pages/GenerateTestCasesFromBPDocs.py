@@ -5,6 +5,10 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.chains.combine_documents.stuff import StuffDocumentsChain
 from utils import read_pdf, read_docx, read_txt
 
+with st.sidebar:
+    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+    "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
+    
 def upload_document(label, file_types):
    uploaded_file = st.file_uploader(label, type=file_types)
    if uploaded_file is not None:
