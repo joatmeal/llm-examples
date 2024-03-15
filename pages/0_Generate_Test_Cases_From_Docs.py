@@ -1,5 +1,5 @@
 import streamlit as st
-from langchain import Langchain # Import Langchain
+from langchain.llms import Langchain # Import Langchain
 import pandas as pd
 import os
 
