@@ -2,6 +2,8 @@ import streamlit as st
 from langchain.llms import openai
 import pandas as pd
 import os
+import docx
+import fitz  # PyMuPDF
 
 def read_pdf(file):
     with fitz.open(stream=file, filetype="pdf") as doc:
