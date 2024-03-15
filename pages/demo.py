@@ -1,20 +1,20 @@
 import streamlit as st
-import openai
+from openai import OpenAI
+
+client = OpenAI()
 
 with st.sidebar:
        openai_api_key = st.text_input("OpenAI API Key", key="openai_api_key", type="password")
        "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
 
 def generate_response(messages):
-   response = openai.ChatCompletion.create(
-       model="gpt-3.5-turbo",
-       messages=messages,
-       max_tokens=150,
-       n=1,
-       stop=None,
-       temperature=0.7,
-   )
-   message = response.choices[0].message['content']
+   response = client.chat.completions.create(model="gpt-3.5-turbo",
+   messages=messages,
+   max_tokens=150,
+   n=1,
+   stop=None,
+   temperature=0.7)
+   message = response.choices[0].message.content
    return message.strip()
 st.title("ChatGPT App")
 if 'messages' not in st.session_state:
