@@ -64,29 +64,11 @@ def process_documents(business_process_doc, detailed_steps_docs):
     llm = ChatOpenAI(model_name="gpt-3.5-turbo",openai_api_key=openai_api_key)
     chain = create_stuff_documents_chain(llm, prompt)
 
-    docs = [Document(page_content= business_process_doc)]
-
-    #        Document(page_content= detailed_steps_docs)]
-
-    st.write(chain.invoke({"context": docs}))
+    docs = [Document(page_content= business_process_doc),Document(content=doc, title=name) for name, doc in detailed_steps_docs.items()]
 
 
-#    combined_text = business_process_doc + "\n\n" + "\n\n".join(detailed_steps_docs.values())
-#    prompt = f"Based on the following business process and detailed steps, generate comprehensive test cases:\n\n{combined_text}\n\nTest cases:"
-#    response = generation_chain.run(prompt=prompt, max_tokens=1024)  # Adjust max_tokens as needed
-#    test_cases = response.split('\n')  # Assuming each test case is separated by a newline
-#    return test_cases
-
-def display_test_cases(test_cases):
     st.subheader("Generated Test Cases")
-    for i, test_case in enumerate(test_cases, start=1):
-        st.text(f"{i}. {test_case}")
-
-    # Optionally, allow users to download the test cases as a file
-    if st.button('Download Test Cases'):
-        test_cases_df = pd.DataFrame(test_cases, columns=["Test Cases"])
-        csv = test_cases_df.to_csv(index=False)
-        st.download_button(label="Download test cases as CSV", data=csv, file_name='test_cases.csv', mime='text/csv')
+    st.write(chain.invoke({"context": docs}))
 
 def main():
 
@@ -96,10 +78,7 @@ def main():
     detailed_steps_docs = upload_detailed_steps_documents()
 
     if st.button("Generate Test Cases") and business_process_doc and detailed_steps_docs:
-        test_cases = process_documents(business_process_doc, detailed_steps_docs)
+        process_documents(business_process_doc, detailed_steps_docs)
         
-
-#        display_test_cases(test_cases)
-
 if __name__ == "__main__":
     main()
