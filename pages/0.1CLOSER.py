@@ -16,9 +16,6 @@ with st.sidebar:
      openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
 "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
     
-llm = openai(api_key=openai_api_key)
-generation_chain = GenerationChain(llm=llm)
-
 def read_pdf(file):
     with fitz.open(stream=file, filetype="pdf") as doc:
         text = ""
