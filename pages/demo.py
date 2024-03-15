@@ -1,6 +1,6 @@
 import streamlit as st
 from openai import OpenAI, OpenAIError
-import textract  # For text extraction from files
+import textract 
 
 def initialize_client(api_key):
     return OpenAI(api_key=api_key)
