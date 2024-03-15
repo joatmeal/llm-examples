@@ -9,7 +9,7 @@ openai_api_key = st.sidebar.text_input("OpenAI API Key", type="password")
 
 def blog_outline(topic):
     # Instantiate LLM model
-    llm = OpenAI(model_name="text-davinci-003", openai_api_key=openai_api_key)
+    llm = OpenAI(model_name="gpt-3.5-turbo", openai_api_key=openai_api_key)
     # Prompt
     template = "As an experienced data scientist and technical writer, generate an outline for a blog about {topic}."
     prompt = PromptTemplate(input_variables=["topic"], template=template)
