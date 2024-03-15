@@ -15,28 +15,26 @@ def upload_document(label, file_types):
        return content
    return None
 def generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_key):
-   
-   client = OpenAI(api_key=openai_api_key)
-
-   combined_documents = f"Business Process Document:\n{business_process_doc}\n\n"
-   for name, doc in detailed_steps_docs.items():
-       combined_documents += f"{name}:\n{doc}\n\n"
-
-   prompt = f"Generate test cases using the following documents:\n\n{combined_documents}"
-   messages = [{"role": "system", "content": prompt}]
-    
-   response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1024, stop=None, temperature=0.7)
-   
-   if response.choices and isinstance(response.choices[0].message, list):
-    messages = response.choices[0].message
+    # Initialize test_cases at the beginning of the function
     test_cases = ""
-    for msg in messages:
-        # Ensure that msg is a dictionary and has the 'role' and 'content' keys
-        if isinstance(msg, dict) and 'role' in msg and 'content' in msg:
-            if msg['role'] == 'assistant':
+    
+    client = OpenAI(api_key=openai_api_key)
+    combined_documents = f"Business Process Document:\n{business_process_doc}\n\n"
+    for name, doc in detailed_steps_docs.items():
+        combined_documents += f"{name}:\n{doc}\n\n"
+    prompt = f"Generate test cases using the following documents:\n\n{combined_documents}"
+    
+    # Assuming you are using the chat API
+    messages = [{"role": "system", "content": prompt}]
+    response = client.chat.completions.create(model="gpt-3.5-turbo", messages=messages, max_tokens=1024, stop=None, temperature=0.7)
+    
+    if response.choices and isinstance(response.choices[0].message, list):
+        messages = response.choices[0].message
+        for msg in messages:
+            if isinstance(msg, dict) and 'role' in msg and 'content' in msg and msg['role'] == 'assistant':
                 test_cases += msg['content'].strip() + "\n"
-
-   return test_cases
+    
+    return test_cases
 
 def main():
    st.title("Test Case Generator for Business Processes")
