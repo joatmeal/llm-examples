@@ -19,7 +19,7 @@ def upload_business_process_document():
     return None
 
 def upload_detailed_steps_documents():
-    uploaded_files = st.file_uploader("Upload detailed steps documents for each activity", accept_multiple_files=True, type=['txt', 'pdf'])
+    uploaded_files = st.file_uploader("Upload detailed steps documents for each activity", accept_multiple_files=True, type=['docx','txt', 'pdf'])
     detailed_docs = {}
     for uploaded_file in uploaded_files:
         # Similar processing as above for each file
