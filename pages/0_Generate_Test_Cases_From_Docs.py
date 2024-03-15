@@ -72,6 +72,7 @@ def main():
     business_process_doc = upload_business_process_document()
     st.text(business_process_doc)
     detailed_steps_docs = upload_detailed_steps_documents()
+    st.text(detailed_steps_docs)
 
 
     if st.button("Generate Test Cases") and business_process_doc and detailed_steps_docs:
