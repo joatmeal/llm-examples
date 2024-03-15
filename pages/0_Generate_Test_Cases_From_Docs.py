@@ -3,31 +3,42 @@ from langchain.llms import openai
 import pandas as pd
 import os
 
-# Assuming you have functions to parse and process documents
-# from process_documents import parse_document, generate_test_cases
+def read_pdf(file):
+    with fitz.open(stream=file, filetype="pdf") as doc:
+        text = ""
+        for page in doc:
+            text += page.get_text()
+    return text
+
+def read_docx(file):
+    doc = docx.Document(file)
+    text = ""
+    for para in doc.paragraphs:
+        text += para.text + "\n"
+    return text
 
 def upload_business_process_document():
-    uploaded_file = st.file_uploader("Upload your business process document", type=['docx','txt', 'pdf'])
+    uploaded_file = st.file_uploader("Upload your business process document", type=['txt', 'pdf', 'docx'])
     if uploaded_file is not None:
-        # Assuming text extraction for simplicity; this would vary based on file type
-        content = uploaded_file.read()
         if uploaded_file.type == "application/pdf":
-            # Process PDF file
-            content = process_pdf(uploaded_file)
-            pass
+            content = read_pdf(uploaded_file)
+        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            content = read_docx(uploaded_file)
+        else:  # Assuming text file
+            content = uploaded_file.getvalue().decode("utf-8")
         return content
     return None
 
 def upload_detailed_steps_documents():
-    uploaded_files = st.file_uploader("Upload detailed steps documents for each activity", accept_multiple_files=True, type=['docx','txt', 'pdf'])
+    uploaded_files = st.file_uploader("Upload detailed steps documents for each activity", accept_multiple_files=True, type=['txt', 'pdf', 'docx'])
     detailed_docs = {}
     for uploaded_file in uploaded_files:
-        # Similar processing as above for each file
-        content = uploaded_file.read()
         if uploaded_file.type == "application/pdf":
-            # Process PDF file
-            # content = process_pdf(uploaded_file)
-            pass
+            content = read_pdf(uploaded_file)
+        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            content = read_docx(uploaded_file)
+        else:  # Assuming text file
+            content = uploaded_file.getvalue().decode("utf-8")
         detailed_docs[uploaded_file.name] = content
     return detailed_docs
 
