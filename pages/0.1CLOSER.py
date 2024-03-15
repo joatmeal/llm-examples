@@ -58,7 +58,7 @@ def upload_detailed_steps_documents():
 def process_documents(business_process_doc, detailed_steps_docs):
     
     business_process_document = Document(page_content=business_process_doc, title="Business Process Document")
-    steps_documents = [Document(page_content=doc, title=name) for name, doc in detailed_steps_docs.items()]
+    steps_documents = [Document(content=doc, title=name) for name, doc in detailed_steps_docs.items()]
     combined_document = [business_process_document, steps_documents]
 
     prompt = ChatPromptTemplate.from_messages(
