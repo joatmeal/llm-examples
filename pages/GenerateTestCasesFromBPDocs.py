@@ -1,13 +1,6 @@
 import streamlit as st
-from langchain.chat_models import ChatOpenAI
-from langchain.docstore.document import Document
-from langchain.prompts import ChatPromptTemplate
-from langchain.chains.combine_documents.stuff import StuffDocumentsChain
+import openai
 from utils import read_pdf, read_docx, read_txt
-
-with st.sidebar:
-    openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
-
 def upload_document(label, file_types):
    uploaded_file = st.file_uploader(label, type=file_types)
    if uploaded_file is not None:
@@ -19,21 +12,27 @@ def upload_document(label, file_types):
            content = read_txt(uploaded_file)
        return content
    return None
-
-def process_documents(business_process_doc, detailed_steps_docs):
-   business_process_document = Document(page_content=business_process_doc, metadata={"source": "Business Process Document"})
-   steps_documents = [Document(page_content=doc, metadata={"source": name}) for name, doc in detailed_steps_docs.items()]
-   combined_documents = [business_process_document] + steps_documents
-   prompt = ChatPromptTemplate.from_messages(
-       [("system", "Generate test cases using the following documents:\n\n{documents}")])
-   llm = ChatOpenAI(model_name="gpt-3.5-turbo", openai_api_key=openai_api_key)
-   chain = StuffDocumentsChain(llm=llm, document_prompt=prompt)
-   st.subheader("Generated Test Cases")
-   st.write(chain.run(input_documents=combined_documents))
-
+def generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_key):
+   openai.api_key = openai_api_key
+   combined_documents = f"Business Process Document:\n{business_process_doc}\n\n"
+   for name, doc in detailed_steps_docs.items():
+       combined_documents += f"{name}:\n{doc}\n\n"
+   prompt = f"Generate test cases using the following documents:\n\n{combined_documents}"
+   response = openai.Completion.create(
+       engine="text-davinci-003",
+       prompt=prompt,
+       max_tokens=1024,
+       n=1,
+       stop=None,
+       temperature=0.7,
+   )
+   test_cases = response.choices[0].text.strip()
+   return test_cases
 def main():
    st.title("Test Case Generator for Business Processes")
-   
+   with st.sidebar:
+       openai_api_key = st.text_input("OpenAI API Key", key="openai_api_key", type="password")
+       "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
    business_process_doc = upload_document("Upload your business process document", ['txt', 'pdf', 'docx'])
    detailed_steps_docs = {}
    if business_process_doc:
@@ -42,7 +41,9 @@ def main():
            detailed_doc = upload_document(f"Upload detailed steps document {i+1}", ['txt', 'pdf', 'docx'])
            if detailed_doc:
                detailed_steps_docs[f"Detailed Steps Document {i+1}"] = detailed_doc
-   if st.button("Generate Test Cases") and business_process_doc and detailed_steps_docs:
-       process_documents(business_process_doc, detailed_steps_docs)
+   if st.button("Generate Test Cases") and business_process_doc and detailed_steps_docs and openai_api_key:
+       test_cases = generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_key)
+       st.subheader("Generated Test Cases")
+       st.write(test_cases)
 if __name__ == "__main__":
    main()
