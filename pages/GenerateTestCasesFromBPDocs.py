@@ -29,7 +29,15 @@ def generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_ke
 
    
    #response = client.chat.completions.create(model="gpt-3.5-turbo",prompt=prompt, max_tokens=1024,n=1,stop=None,temperature=0.7)
-   test_cases = response.choices[0].text.strip()
+   
+   choice_messages = response.choices[0].message
+
+   for msg in choice_messages:
+    if msg['role'] == 'assistant':
+        test_cases += msg['content'].strip() + "\n"
+   
+   # test_cases = response.choices[0].message
+
    return test_cases
 
 def main():
