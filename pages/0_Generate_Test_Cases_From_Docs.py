@@ -49,6 +49,11 @@ def display_test_cases(test_cases):
         st.download_button(label="Download test cases as CSV", data=csv, file_name='test_cases.csv', mime='text/csv')
 
 def main():
+
+    with st.sidebar:
+        openai_api_key = st.text_input("OpenAI API Key", key="chatbot_api_key", type="password")
+        "[Get an OpenAI API key](https://platform.openai.com/account/api-keys)"
+
     st.title("Test Case Generator for Business Processes")
 
     business_process_doc = upload_business_process_document()
