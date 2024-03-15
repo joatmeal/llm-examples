@@ -7,7 +7,7 @@ import os
 # from process_documents import parse_document, generate_test_cases
 
 def upload_business_process_document():
-    uploaded_file = st.file_uploader("Upload your business process document", type=['txt', 'pdf'])
+    uploaded_file = st.file_uploader("Upload your business process document", type=['docx','txt', 'pdf'])
     if uploaded_file is not None:
         # Assuming text extraction for simplicity; this would vary based on file type
         content = uploaded_file.read()
