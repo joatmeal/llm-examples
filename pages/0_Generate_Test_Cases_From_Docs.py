@@ -13,7 +13,7 @@ def upload_business_process_document():
         content = uploaded_file.read()
         if uploaded_file.type == "application/pdf":
             # Process PDF file
-            # content = process_pdf(uploaded_file)
+            content = process_pdf(uploaded_file)
             pass
         return content
     return None
