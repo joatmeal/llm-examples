@@ -1,7 +1,7 @@
 import streamlit as st
 from openai import OpenAI
 
-client = OpenAI(api_key=openai_api_key)
+
 from utils import read_pdf, read_docx, read_txt
 def upload_document(label, file_types):
    uploaded_file = st.file_uploader(label, type=file_types)
@@ -15,6 +15,9 @@ def upload_document(label, file_types):
        return content
    return None
 def generate_test_cases(business_process_doc, detailed_steps_docs, openai_api_key):
+   
+   client = OpenAI(api_key=openai_api_key)
+
    combined_documents = f"Business Process Document:\n{business_process_doc}\n\n"
    for name, doc in detailed_steps_docs.items():
        combined_documents += f"{name}:\n{doc}\n\n"
